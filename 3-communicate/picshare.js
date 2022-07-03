@@ -6172,7 +6172,7 @@ var $author$project$Picshare$fetchFeed = $elm$http$Http$get(
 		expect: A2($elm$http$Http$expectJson, $author$project$Picshare$LoadFeed, $author$project$Picshare$photoDecoder),
 		url: $author$project$Picshare$baseUrl + 'feed/1'
 	});
-var $author$project$Picshare$initialModel = {photo: $elm$core$Maybe$Nothing};
+var $author$project$Picshare$initialModel = {caption: 'Surfing', comments: _List_Nil, id: 1, liked: false, newComment: '', url: $author$project$Picshare$baseUrl + '1.jpg'};
 var $author$project$Picshare$init = function (_v0) {
 	return _Utils_Tuple2($author$project$Picshare$initialModel, $author$project$Picshare$fetchFeed);
 };
@@ -6183,49 +6183,24 @@ var $author$project$Picshare$subscriptions = function (model) {
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $elm$core$Basics$not = _Basics_not;
 var $elm$core$String$trim = _String_trim;
-var $author$project$Picshare$saveNewComment = function (photo) {
-	var comment = $elm$core$String$trim(photo.newComment);
+var $author$project$Picshare$saveNewComment = function (model) {
+	var comment = $elm$core$String$trim(model.newComment);
 	if (comment === '') {
-		return photo;
+		return model;
 	} else {
 		return _Utils_update(
-			photo,
+			model,
 			{
 				comments: _Utils_ap(
-					photo.comments,
+					model.comments,
 					_List_fromArray(
 						[comment])),
 				newComment: ''
 			});
 	}
 };
-var $elm$core$Basics$not = _Basics_not;
-var $author$project$Picshare$toggleLike = function (photo) {
-	return _Utils_update(
-		photo,
-		{liked: !photo.liked});
-};
-var $author$project$Picshare$updateComment = F2(
-	function (comment, photo) {
-		return _Utils_update(
-			photo,
-			{newComment: comment});
-	});
-var $elm$core$Maybe$map = F2(
-	function (f, maybe) {
-		if (maybe.$ === 'Just') {
-			var value = maybe.a;
-			return $elm$core$Maybe$Just(
-				f(value));
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
-	});
-var $author$project$Picshare$updateFeed = F2(
-	function (updatePhoto, maybePhoto) {
-		return A2($elm$core$Maybe$map, updatePhoto, maybePhoto);
-	});
 var $author$project$Picshare$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -6233,43 +6208,21 @@ var $author$project$Picshare$update = F2(
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{
-							photo: A2($author$project$Picshare$updateFeed, $author$project$Picshare$toggleLike, model.photo)
-						}),
+						{liked: !model.liked}),
 					$elm$core$Platform$Cmd$none);
 			case 'UpdateComment':
 				var comment = msg.a;
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
-						{
-							photo: A2(
-								$author$project$Picshare$updateFeed,
-								$author$project$Picshare$updateComment(comment),
-								model.photo)
-						}),
+						{newComment: comment}),
 					$elm$core$Platform$Cmd$none);
-			case 'SaveComment':
+			case 'SaveNewComment':
 				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{
-							photo: A2($author$project$Picshare$updateFeed, $author$project$Picshare$saveNewComment, model.photo)
-						}),
+					$author$project$Picshare$saveNewComment(model),
 					$elm$core$Platform$Cmd$none);
 			default:
-				if (msg.a.$ === 'Ok') {
-					var photo = msg.a.a;
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								photo: $elm$core$Maybe$Just(photo)
-							}),
-						$elm$core$Platform$Cmd$none);
-				} else {
-					return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-				}
+				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 		}
 	});
 var $elm$json$Json$Encode$string = _Json_wrap;
@@ -6285,34 +6238,15 @@ var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
-var $author$project$Picshare$ToggleLike = {$: 'ToggleLike'};
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
-var $elm$html$Html$i = _VirtualDom_node('i');
 var $elm$html$Html$img = _VirtualDom_node('img');
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 'Normal', a: a};
-};
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var $elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
-};
 var $elm$html$Html$Attributes$src = function (url) {
 	return A2(
 		$elm$html$Html$Attributes$stringProperty,
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
-var $author$project$Picshare$SaveComment = {$: 'SaveComment'};
+var $author$project$Picshare$SaveNewComment = {$: 'SaveNewComment'};
 var $author$project$Picshare$UpdateComment = function (a) {
 	return {$: 'UpdateComment', a: a};
 };
@@ -6334,6 +6268,7 @@ var $elm$html$Html$Events$alwaysStop = function (x) {
 var $elm$virtual_dom$VirtualDom$MayStopPropagation = function (a) {
 	return {$: 'MayStopPropagation', a: a};
 };
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
 var $elm$html$Html$Events$stopPropagationOn = F2(
 	function (event, decoder) {
 		return A2(
@@ -6385,11 +6320,10 @@ var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProp
 var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
 var $elm$html$Html$Attributes$value = $elm$html$Html$Attributes$stringProperty('value');
 var $elm$html$Html$ul = _VirtualDom_node('ul');
-var $elm$html$Html$li = _VirtualDom_node('li');
 var $elm$html$Html$strong = _VirtualDom_node('strong');
 var $author$project$Picshare$viewComment = function (comment) {
 	return A2(
-		$elm$html$Html$li,
+		$elm$html$Html$div,
 		_List_Nil,
 		_List_fromArray(
 			[
@@ -6422,19 +6356,19 @@ var $author$project$Picshare$viewCommentList = function (comments) {
 				]));
 	}
 };
-var $author$project$Picshare$viewComments = function (photo) {
+var $author$project$Picshare$viewComments = function (model) {
 	return A2(
 		$elm$html$Html$div,
 		_List_Nil,
 		_List_fromArray(
 			[
-				$author$project$Picshare$viewCommentList(photo.comments),
+				$author$project$Picshare$viewCommentList(model.comments),
 				A2(
 				$elm$html$Html$form,
 				_List_fromArray(
 					[
 						$elm$html$Html$Attributes$class('new-comment'),
-						$elm$html$Html$Events$onSubmit($author$project$Picshare$SaveComment)
+						$elm$html$Html$Events$onSubmit($author$project$Picshare$SaveNewComment)
 					]),
 				_List_fromArray(
 					[
@@ -6443,8 +6377,8 @@ var $author$project$Picshare$viewComments = function (photo) {
 						_List_fromArray(
 							[
 								$elm$html$Html$Attributes$type_('text'),
-								$elm$html$Html$Attributes$placeholder('Add a comment...'),
-								$elm$html$Html$Attributes$value(photo.newComment),
+								$elm$html$Html$Attributes$placeholder('Add your comment'),
+								$elm$html$Html$Attributes$value(model.newComment),
 								$elm$html$Html$Events$onInput($author$project$Picshare$UpdateComment)
 							]),
 						_List_Nil),
@@ -6453,17 +6387,56 @@ var $author$project$Picshare$viewComments = function (photo) {
 						_List_fromArray(
 							[
 								$elm$html$Html$Attributes$disabled(
-								$elm$core$String$isEmpty(photo.newComment))
+								$elm$core$String$isEmpty(model.newComment))
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text('Submit')
+								$elm$html$Html$text('Save')
 							]))
 					]))
 			]));
 };
-var $author$project$Picshare$viewDetailedPhoto = function (photo) {
-	var buttonClass = photo.liked ? 'fa-heart' : 'fa-heart-o';
+var $author$project$Picshare$ToggleLike = {$: 'ToggleLike'};
+var $elm$html$Html$i = _VirtualDom_node('i');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 'Normal', a: a};
+};
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $author$project$Picshare$viewLikeButton = function (model) {
+	var buttonClass = model.liked ? 'fa-heart' : 'fa-heart-o';
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('like-button')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$elm$html$Html$i,
+				_List_fromArray(
+					[
+						$elm$html$Html$Attributes$class('fa fa-2x'),
+						$elm$html$Html$Attributes$class(buttonClass),
+						$elm$html$Html$Events$onClick($author$project$Picshare$ToggleLike)
+					]),
+				_List_Nil)
+			]));
+};
+var $author$project$Picshare$viewDetailedPhoto = function (model) {
+	var buttonClass = model.liked ? 'fa-heart' : 'fa-heart-o';
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -6476,7 +6449,7 @@ var $author$project$Picshare$viewDetailedPhoto = function (photo) {
 				$elm$html$Html$img,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$src(photo.url)
+						$elm$html$Html$Attributes$src(model.url)
 					]),
 				_List_Nil),
 				A2(
@@ -6487,24 +6460,7 @@ var $author$project$Picshare$viewDetailedPhoto = function (photo) {
 					]),
 				_List_fromArray(
 					[
-						A2(
-						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('like-button')
-							]),
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$i,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('fa fa-2x'),
-										$elm$html$Html$Attributes$class(buttonClass),
-										$elm$html$Html$Events$onClick($author$project$Picshare$ToggleLike)
-									]),
-								_List_Nil)
-							])),
+						$author$project$Picshare$viewLikeButton(model),
 						A2(
 						$elm$html$Html$h2,
 						_List_fromArray(
@@ -6513,28 +6469,11 @@ var $author$project$Picshare$viewDetailedPhoto = function (photo) {
 							]),
 						_List_fromArray(
 							[
-								$elm$html$Html$text(photo.caption)
+								$elm$html$Html$text(model.caption)
 							])),
-						$author$project$Picshare$viewComments(photo)
+						$author$project$Picshare$viewComments(model)
 					]))
 			]));
-};
-var $author$project$Picshare$viewFeed = function (maybePhoto) {
-	if (maybePhoto.$ === 'Just') {
-		var photo = maybePhoto.a;
-		return $author$project$Picshare$viewDetailedPhoto(photo);
-	} else {
-		return A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('loading-feed')
-				]),
-			_List_fromArray(
-				[
-					$elm$html$Html$text('Loading Feed ...')
-				]));
-	}
 };
 var $author$project$Picshare$view = function (model) {
 	return A2(
@@ -6566,7 +6505,7 @@ var $author$project$Picshare$view = function (model) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$Picshare$viewFeed(model.photo)
+						$author$project$Picshare$viewDetailedPhoto(model)
 					]))
 			]));
 };

@@ -1,22 +1,23 @@
-module Picshare05 exposing (main)
+module Picshare03 exposing (main)
 
+-- START:import.browser
 import Browser
+-- END:import.browser
+
 import Html exposing (..)
 import Html.Attributes exposing (class, src)
-import Html.Events exposing (onClick)
-
-
-type alias Model =
-    { url : String
-    , caption : String
-    , liked : Bool
-    }
-
+import Html.Events exposing(onClick)
 
 baseUrl : String
 baseUrl =
     "https://programming-elm.com/"
 
+-- START: Model
+type alias Model =
+    { url : String
+    , caption : String
+    , liked : Bool
+    }
 
 initialModel : Model
 initialModel =
@@ -24,20 +25,19 @@ initialModel =
     , caption = "Surfing"
     , liked = False
     }
+-- END: Model
 
-
--- START:viewLoveButton
-viewLoveButton : Model -> Html Msg
-viewLoveButton model =
+-- START: View
+viewLikeButton : Model -> Html Msg
+viewLikeButton model =
     let
-        buttonClass =
+        buttonClass = 
             if model.liked then
                 "fa-heart"
-
             else
                 "fa-heart-o"
     in
-    div [ class "like-button" ]
+    div [ class "like-button"]
         [ i
             [ class "fa fa-2x"
             , class buttonClass
@@ -45,47 +45,46 @@ viewLoveButton model =
             ]
             []
         ]
--- END:viewLoveButton
 
-
--- START:viewDetailedPhoto
 viewDetailedPhoto : Model -> Html Msg
 viewDetailedPhoto model =
+    let
+        buttonClass = 
+            if model.liked then
+                "fa-heart"
+            else
+                "fa-heart-o"
+    in
     div [ class "detailed-photo" ]
         [ img [ src model.url ] []
         , div [ class "photo-info" ]
-            [ viewLoveButton model
+            [ viewLikeButton model
             , h2 [ class "caption" ] [ text model.caption ]
             ]
         ]
--- END:viewDetailedPhoto
-
 
 view : Model -> Html Msg
 view model =
     div []
         [ div [ class "header" ]
-            [ h1 [] [ text "Picshare" ] ]
+            [ h1 [] [ text "Picshare"] ]
         , div [ class "content-flow" ]
             [ viewDetailedPhoto model ]
         ]
+-- END: View
 
-
--- START:msg
+-- START : Update
 type Msg
     = ToggleLike
--- END:msg
 
-
--- START:update
 update : Msg -> Model -> Model
 update msg model =
     case msg of
         ToggleLike ->
             { model | liked = not model.liked }
--- END:update
+-- END : Update
 
-
+-- START: main
 main : Program () Model Msg
 main =
     Browser.sandbox
@@ -93,3 +92,4 @@ main =
         , view = view
         , update = update
         }
+-- END: main

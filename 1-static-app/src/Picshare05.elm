@@ -1,4 +1,4 @@
-module Picshare01 exposing (main)
+module Picshare exposing (main)
 
 import Html exposing (..)
 import Html.Attributes exposing (class, src)

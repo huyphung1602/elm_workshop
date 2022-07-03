@@ -3,7 +3,19 @@ module Picshare exposing (main)
 import Html exposing (..)
 import Html.Attributes exposing (class, src)
 
--- MAIN
+baseUrl : String
+baseUrl =
+    "https://programming-elm.com"
+
+viewDetailedPhoto : String -> String -> Html msg
+viewDetailedPhoto url caption =
+    div [ class "detailed-photo" ]
+        [ img [ src url ] []
+        , div [ class "photo-info" ]
+            [ h2 [ class caption ] [ text caption ]]
+        ]
+
+-- START: Main
 main : Html msg
 main =
     div []
@@ -17,15 +29,4 @@ main =
             ]
         ]
     ]
-
-baseUrl : String
-baseUrl =
-    "https://programming-elm.com"
-
-viewDetailedPhoto : String -> String -> Html msg
-viewDetailedPhoto url caption =
-    div [ class "detailed-photo" ]
-        [ img [ src url ] []
-        , div [ class "photo-info" ]
-            [ h2 [ class caption ] [ text caption ]]
-        ]
+-- END: Main

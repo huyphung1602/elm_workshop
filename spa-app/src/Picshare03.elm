@@ -27,7 +27,7 @@ initialModel =
     }
 -- END: Model
 
--- START: View
+-- START: View Like Button
 viewLikeButton : Model -> Html Msg
 viewLikeButton model =
     let
@@ -45,7 +45,9 @@ viewLikeButton model =
             ]
             []
         ]
+-- End: View Like Button
 
+-- START: View
 viewDetailedPhoto : Model -> Html Msg
 viewDetailedPhoto model =
     let

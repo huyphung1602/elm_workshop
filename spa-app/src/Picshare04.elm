@@ -1,14 +1,18 @@
-module Picshare06 exposing (main)
+module Picshare04 exposing (main)
 
+-- START:import.browser
 import Browser
+-- END:import.browser
+
 import Html exposing (..)
--- START:imports
-import Html.Attributes exposing (class, placeholder, src, type_)
--- END:imports
-import Html.Events exposing (onClick)
+import Html.Attributes exposing (class, src, placeholder, type_, disabled, value)
+import Html.Events exposing(onClick, onInput, onSubmit)
 
+baseUrl : String
+baseUrl =
+    "https://programming-elm.com/"
 
--- START:model.alias
+-- START: Model
 type alias Model =
     { url : String
     , caption : String
@@ -16,37 +20,28 @@ type alias Model =
     , comments : List String
     , newComment : String
     }
--- END:model.alias
 
-
-baseUrl : String
-baseUrl =
-    "https://programming-elm.com/"
-
-
--- START:initialModel
 initialModel : Model
 initialModel =
     { url = baseUrl ++ "1.jpg"
     , caption = "Surfing"
     , liked = False
-    , comments = [ "Cowabunga, dude!" ]
+    , comments = []
     , newComment = ""
     }
--- END:initialModel
+-- END: Model
 
-
-viewLoveButton : Model -> Html Msg
-viewLoveButton model =
+-- START: View Like Button
+viewLikeButton : Model -> Html Msg
+viewLikeButton model =
     let
-        buttonClass =
+        buttonClass = 
             if model.liked then
                 "fa-heart"
-
             else
                 "fa-heart-o"
     in
-    div [ class "like-button" ]
+    div [ class "like-button"]
         [ i
             [ class "fa fa-2x"
             , class buttonClass
@@ -54,85 +49,106 @@ viewLoveButton model =
             ]
             []
         ]
+-- End: View Like Button
 
-
--- START:viewComment
+-- START: View Comment
 viewComment : String -> Html Msg
 viewComment comment =
-    li []
+    div []
         [ strong [] [ text "Comment:" ]
         , text (" " ++ comment)
         ]
--- END:viewComment
 
-
--- START:viewCommentList
 viewCommentList : List String -> Html Msg
 viewCommentList comments =
     case comments of
         [] ->
             text ""
-
         _ ->
             div [ class "comments" ]
                 [ ul []
                     (List.map viewComment comments)
                 ]
--- END:viewCommentList
 
-
--- START:viewComments
 viewComments : Model -> Html Msg
 viewComments model =
     div []
         [ viewCommentList model.comments
-        , form [ class "new-comment" ]
+        , form [ class "new-comment", onSubmit SaveNewComment ]
             [ input
                 [ type_ "text"
-                , placeholder "Add a comment..."
+                , placeholder "Add your comment"
+                , value model.newComment
+                , onInput UpdateComment
                 ]
                 []
-            , button [] [ text "Save" ]
+            , button [ disabled (String.isEmpty model.newComment) ] [ text "Save" ]
             ]
         ]
--- END:viewComments
+-- End: View Comment
 
-
+-- START: View
 viewDetailedPhoto : Model -> Html Msg
--- START:viewDetailedPhoto
 viewDetailedPhoto model =
+    let
+        buttonClass = 
+            if model.liked then
+                "fa-heart"
+            else
+                "fa-heart-o"
+    in
     div [ class "detailed-photo" ]
         [ img [ src model.url ] []
         , div [ class "photo-info" ]
-            [ viewLoveButton model
+            [ viewLikeButton model
             , h2 [ class "caption" ] [ text model.caption ]
             , viewComments model
             ]
         ]
--- END:viewDetailedPhoto
-
 
 view : Model -> Html Msg
 view model =
     div []
         [ div [ class "header" ]
-            [ h1 [] [ text "Picshare" ] ]
+            [ h1 [] [ text "Picshare"] ]
         , div [ class "content-flow" ]
             [ viewDetailedPhoto model ]
         ]
+-- END: View
 
+-- START : Save new comment
+saveNewComment : Model -> Model
+saveNewComment model =
+    let
+        comment = String.trim model.newComment
+    in
+    case comment of
+        "" ->
+            model
+        _ ->
+            { model | comments = model.comments ++ [ comment ]
+            , newComment = ""
+            }
+-- End : Save new comment
 
+-- START : Update
 type Msg
     = ToggleLike
-
+    | UpdateComment String
+    | SaveNewComment
 
 update : Msg -> Model -> Model
 update msg model =
     case msg of
         ToggleLike ->
             { model | liked = not model.liked }
+        UpdateComment comment ->
+            { model | newComment = comment }
+        SaveNewComment ->
+            saveNewComment model
+-- END : Update
 
-
+-- START: main
 main : Program () Model Msg
 main =
     Browser.sandbox
@@ -140,3 +156,4 @@ main =
         , view = view
         , update = update
         }
+-- END: main

@@ -1,4 +1,4 @@
-module Picshare exposing (main)
+module Picshare03 exposing (main)
 
 -- START:import.browser
 import Browser

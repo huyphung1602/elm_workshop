@@ -1,4 +1,4 @@
-module Picshare exposing (main)
+module Picshare07 exposing (main)
 
 import Browser
 import Html exposing (..)

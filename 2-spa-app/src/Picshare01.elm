@@ -7,7 +7,7 @@ baseUrl : String
 baseUrl =
     "https://programming-elm.com/"
 
--- START: Model
+-- START : Model
 type alias Model =
     { url : String
     , caption : String
@@ -18,9 +18,9 @@ initialModel =
     { url = baseUrl ++ "1.jpg"
     , caption = "Surfing"
     }
--- END: Model
+-- END : Model
 
--- START: View
+-- START : View
 view : Model -> Html msg
 view model =
     div []
@@ -37,10 +37,10 @@ viewDetailedPhoto model =
         , div [ class "photo-info" ]
             [ h2 [ class "caption" ] [ text model.caption ]]
         ]
--- END: View
+-- END : View
 
--- START: main
+-- START : main
 main : Html msg
 main =
     view initialModel
--- END: main
+-- END : main

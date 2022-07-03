@@ -3,7 +3,7 @@ module Picshare02 exposing (main)
 import Html exposing (..)
 import Html.Attributes exposing (class, src)
 
--- START: Main
+-- START : Main
 main : Html msg
 main =
     div []
@@ -17,4 +17,4 @@ main =
                 ]
             ]
         ]
--- END: Main
+-- END : Main

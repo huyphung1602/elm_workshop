@@ -1,8 +1,8 @@
 module Picshare03 exposing (main)
 
--- START:import.browser
+-- START :import.browser
 import Browser
--- END:import.browser
+-- END :import.browser
 
 import Html exposing (..)
 import Html.Attributes exposing (class, src)
@@ -12,7 +12,7 @@ baseUrl : String
 baseUrl =
     "https://programming-elm.com/"
 
--- START: Model
+-- START : Model
 type alias Model =
     { url : String
     , caption : String
@@ -25,9 +25,9 @@ initialModel =
     , caption = "Surfing"
     , liked = False
     }
--- END: Model
+-- END : Model
 
--- START: View Like Button
+-- START : View Like Button
 viewLikeButton : Model -> Html Msg
 viewLikeButton model =
     let
@@ -45,9 +45,9 @@ viewLikeButton model =
             ]
             []
         ]
--- End: View Like Button
+-- END : View Like Button
 
--- START: View
+-- START : View
 viewDetailedPhoto : Model -> Html Msg
 viewDetailedPhoto model =
     let
@@ -73,7 +73,7 @@ view model =
         , div [ class "content-flow" ]
             [ viewDetailedPhoto model ]
         ]
--- END: View
+-- END : View
 
 -- START : Update
 type Msg
@@ -86,7 +86,7 @@ update msg model =
             { model | liked = not model.liked }
 -- END : Update
 
--- START: main
+-- START : main
 main : Program () Model Msg
 main =
     Browser.sandbox
@@ -94,4 +94,4 @@ main =
         , view = view
         , update = update
         }
--- END: main
+-- END : main

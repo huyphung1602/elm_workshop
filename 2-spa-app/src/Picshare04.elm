@@ -1,8 +1,8 @@
 module Picshare04 exposing (main)
 
--- START:import.browser
+-- START :import.browser
 import Browser
--- END:import.browser
+-- END :import.browser
 
 import Html exposing (..)
 import Html.Attributes exposing (class, src, placeholder, type_, disabled, value)
@@ -12,7 +12,7 @@ baseUrl : String
 baseUrl =
     "https://programming-elm.com/"
 
--- START: Model
+-- START : Model
 type alias Model =
     { url : String
     , caption : String
@@ -29,9 +29,9 @@ initialModel =
     , comments = []
     , newComment = ""
     }
--- END: Model
+-- END : Model
 
--- START: View Like Button
+-- START : View Like Button
 viewLikeButton : Model -> Html Msg
 viewLikeButton model =
     let
@@ -49,9 +49,9 @@ viewLikeButton model =
             ]
             []
         ]
--- End: View Like Button
+-- END : View Like Button
 
--- START: View Comment
+-- START : View Comment
 viewComment : String -> Html Msg
 viewComment comment =
     div []
@@ -85,9 +85,9 @@ viewComments model =
             , button [ disabled (String.isEmpty model.newComment) ] [ text "Save" ]
             ]
         ]
--- End: View Comment
+-- END : View Comment
 
--- START: View
+-- START : View
 viewDetailedPhoto : Model -> Html Msg
 viewDetailedPhoto model =
     let
@@ -114,7 +114,7 @@ view model =
         , div [ class "content-flow" ]
             [ viewDetailedPhoto model ]
         ]
--- END: View
+-- END : View
 
 -- START : Save new comment
 saveNewComment : Model -> Model
@@ -148,7 +148,7 @@ update msg model =
             saveNewComment model
 -- END : Update
 
--- START: main
+-- START : main
 main : Program () Model Msg
 main =
     Browser.sandbox
@@ -156,4 +156,4 @@ main =
         , view = view
         , update = update
         }
--- END: main
+-- END : main

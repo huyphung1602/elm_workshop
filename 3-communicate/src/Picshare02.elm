@@ -1,4 +1,4 @@
-module Picshare exposing (main, photoDecoder)
+module Picshare02 exposing (main, photoDecoder)
 
 -- START :import.browser
 import Browser

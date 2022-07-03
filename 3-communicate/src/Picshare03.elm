@@ -1,17 +1,44 @@
-module Picshare exposing (main)
+module Picshare03 exposing (main, photoDecoder)
 
+-- START :import.browser
 import Browser
+-- END :import.browser
+
 import Html exposing (..)
-import Html.Attributes exposing (class, disabled, placeholder, src, type_, value)
-import Html.Events exposing (onClick, onInput, onSubmit)
-import Http
+import Html.Attributes exposing (class, src, placeholder, type_, disabled, value)
+import Html.Events exposing(onClick, onInput, onSubmit)
 import Json.Decode exposing (Decoder, bool, int, list, string, succeed)
 import Json.Decode.Pipeline exposing (hardcoded, required)
+import Http
 
+baseUrl : String
+baseUrl =
+    "https://programming-elm.com/"
 
+-- START : photoDecoder
+photoDecoder : Decoder Photo
+photoDecoder =
+    succeed Photo
+        |> required "id" int
+        |> required "url" string
+        |> required "caption" string
+        |> required "liked" bool
+        |> required "comments" (list string)
+        |> hardcoded ""
+-- END : photoDecoder
+
+-- START : fetchFeed
+fetchFeed : Cmd Msg
+fetchFeed =
+    Http.get
+        { url = baseUrl ++ "feed/1"
+        , expect = Http.expectJson LoadFeed photoDecoder
+        }
+-- END : fetchFeed
+
+-- START : Model
 type alias Id =
     Int
-
 
 type alias Photo =
     { id : Id
@@ -22,72 +49,42 @@ type alias Photo =
     , newComment : String
     }
 
-
--- START:model.alias
 type alias Model =
     { photo : Maybe Photo
     }
--- END:model.alias
-
-
-photoDecoder : Decoder Photo
-photoDecoder =
-    succeed Photo
-        |> required "id" int
-        |> required "url" string
-        |> required "caption" string
-        |> required "liked" bool
-        |> required "comments" (list string)
-        |> hardcoded ""
-
-
-baseUrl : String
-baseUrl =
-    "https://programming-elm.com/"
-
 
 initialModel : Model
--- START:initialModel
 initialModel =
-    { photo =
+   { photo =
         Just
             { id = 1
             , url = baseUrl ++ "1.jpg"
             , caption = "Surfing"
             , liked = False
-            , comments = [ "Cowabunga, dude!" ]
+            , comments = []
             , newComment = ""
             }
-    }
--- END:initialModel
+   }
 
+-- END : Model
 
-init : () -> ( Model, Cmd Msg )
+-- START : init
+init : () -> ( Model, Cmd Msg)
 init () =
     ( initialModel, fetchFeed )
+-- END : init
 
-
-fetchFeed : Cmd Msg
-fetchFeed =
-    Http.get
-        { url = baseUrl ++ "feed/1"
-        , expect = Http.expectJson LoadFeed photoDecoder
-        }
-
-
--- START:viewLoveButton
-viewLoveButton : Photo -> Html Msg
--- END:viewLoveButton
-viewLoveButton photo =
+-- START : View Like Button
+viewLikeButton : Photo -> Html Msg
+viewLikeButton photo =
     let
-        buttonClass =
+        buttonClass = 
             if photo.liked then
                 "fa-heart"
-
             else
                 "fa-heart-o"
     in
-    div [ class "like-button" ]
+    div [ class "like-button"]
         [ i
             [ class "fa fa-2x"
             , class buttonClass
@@ -95,170 +92,151 @@ viewLoveButton photo =
             ]
             []
         ]
+-- END : View Like Button
 
-
+-- START : View Comment
 viewComment : String -> Html Msg
 viewComment comment =
-    li []
+    div []
         [ strong [] [ text "Comment:" ]
         , text (" " ++ comment)
         ]
-
 
 viewCommentList : List String -> Html Msg
 viewCommentList comments =
     case comments of
         [] ->
             text ""
-
         _ ->
             div [ class "comments" ]
                 [ ul []
                     (List.map viewComment comments)
                 ]
 
-
--- START:viewComments
 viewComments : Photo -> Html Msg
--- END:viewComments
 viewComments photo =
     div []
         [ viewCommentList photo.comments
-        , form [ class "new-comment", onSubmit SaveComment ]
+        , form [ class "new-comment", onSubmit SaveNewComment ]
             [ input
                 [ type_ "text"
-                , placeholder "Add a comment..."
+                , placeholder "Add your comment"
                 , value photo.newComment
                 , onInput UpdateComment
                 ]
                 []
-            , button
-                [ disabled (String.isEmpty photo.newComment) ]
-                [ text "Save" ]
+            , button [ disabled (String.isEmpty photo.newComment) ] [ text "Save" ]
             ]
         ]
+-- END : View Comment
 
-
--- START:viewDetailedPhoto
+-- START : View
 viewDetailedPhoto : Photo -> Html Msg
--- END:viewDetailedPhoto
 viewDetailedPhoto photo =
+    let
+        buttonClass = 
+            if photo.liked then
+                "fa-heart"
+            else
+                "fa-heart-o"
+    in
     div [ class "detailed-photo" ]
         [ img [ src photo.url ] []
         , div [ class "photo-info" ]
-            [ viewLoveButton photo
+            [ viewLikeButton photo
             , h2 [ class "caption" ] [ text photo.caption ]
             , viewComments photo
             ]
         ]
 
-
--- START:viewFeed
 viewFeed : Maybe Photo -> Html Msg
 viewFeed maybePhoto =
     case maybePhoto of
         Just photo ->
             viewDetailedPhoto photo
-
         Nothing ->
             text ""
--- END:viewFeed
-
 
 view : Model -> Html Msg
--- START:view
 view model =
     div []
         [ div [ class "header" ]
-            [ h1 [] [ text "Picshare" ] ]
+            [ h1 [] [ text "Picshare"] ]
         , div [ class "content-flow" ]
             [ viewFeed model.photo ]
         ]
--- END:view
+-- END : View
 
-
-type Msg
-    = ToggleLike
-    | UpdateComment String
-    | SaveComment
-    | LoadFeed (Result Http.Error Photo)
-
-
--- START:saveNewComment
+-- START : Save new comment
 saveNewComment : Photo -> Photo
--- END:saveNewComment
 saveNewComment photo =
     let
-        comment =
-            String.trim photo.newComment
+        comment = String.trim photo.newComment
     in
     case comment of
         "" ->
             photo
-
         _ ->
-            { photo
-                | comments = photo.comments ++ [ comment ]
-                , newComment = ""
+            { photo | comments = photo.comments ++ [ comment ]
+            , newComment = ""
             }
+-- End : Save new comment
 
+-- START : Update
+type Msg
+    = ToggleLike
+    | UpdateComment String
+    | SaveNewComment
+    | LoadFeed (Result Http.Error Photo)
 
--- START:photo.update.helpers
 toggleLike : Photo -> Photo
 toggleLike photo =
     { photo | liked = not photo.liked }
 
-
 updateComment : String -> Photo -> Photo
 updateComment comment photo =
     { photo | newComment = comment }
--- END:photo.update.helpers
 
-
--- START:updateFeed
 updateFeed : (Photo -> Photo) -> Maybe Photo -> Maybe Photo
 updateFeed updatePhoto maybePhoto =
-    Maybe.map updatePhoto maybePhoto
--- END:updateFeed
+    case maybePhoto of
+        Just photo ->
+            Just (updatePhoto photo)
+        Nothing ->
+            Nothing
 
-
--- START:update1
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ToggleLike ->
-            ( { model
+            ({ model
                 | photo = updateFeed toggleLike model.photo
-              }
+             }
             , Cmd.none
             )
-
         UpdateComment comment ->
-            ( { model
-                | photo = updateFeed (updateComment comment) model.photo
-              }
+            ({ model
+                | photo = updateFeed (updateComment comment) model.photo 
+             }
             , Cmd.none
             )
--- END:update1
-
--- START:update2
-        SaveComment ->
-            ( { model
+        SaveNewComment ->
+            ({ model
                 | photo = updateFeed saveNewComment model.photo
-              }
+             }
             , Cmd.none
             )
-
         LoadFeed _ ->
             ( model, Cmd.none )
--- END:update2
+-- END : Update
 
-
+-- START : subscriptions
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
+-- END : subscriptions
 
-
+-- START : main
 main : Program () Model Msg
 main =
     Browser.element
@@ -267,3 +245,4 @@ main =
         , update = update
         , subscriptions = subscriptions
         }
+-- END : main

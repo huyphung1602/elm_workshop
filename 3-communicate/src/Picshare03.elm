@@ -209,21 +209,21 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ToggleLike ->
-            ({ model
+            ( { model
                 | photo = updateFeed toggleLike model.photo
-             }
+              }
             , Cmd.none
             )
         UpdateComment comment ->
-            ({ model
+            ( { model
                 | photo = updateFeed (updateComment comment) model.photo 
-             }
+              }
             , Cmd.none
             )
         SaveNewComment ->
-            ({ model
+            ( { model
                 | photo = updateFeed saveNewComment model.photo
-             }
+              }
             , Cmd.none
             )
         LoadFeed _ ->

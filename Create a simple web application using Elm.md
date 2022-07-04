@@ -67,6 +67,7 @@ Elm 0.19 introdues **Dead Code Elimination** (compile with `--optimize` flag). I
 
 ---
 <!-- .slide: class="left-al"" -->
+
 ### Javascript interop
 You can use Elm as a small part of your existing project (Holistics). [Learn more](http://guide.elm-lang.org/interop/)
 

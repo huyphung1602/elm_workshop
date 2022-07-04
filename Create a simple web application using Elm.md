@@ -175,7 +175,7 @@ cd ./1-static-app
 ```
 
 ---
-# Write your SPA web application
+# A stateful application
 ---
 
 ## Elm Architecture <!-- element class="left-al" -->
@@ -239,7 +239,7 @@ Now, let's write the **Picshare** spa application together. We will:
 - Add comments
 
 ```bash
-cd ./2-spa-app
+cd ./2-stateful-app
 ```
 ---
 # Communicate via HTTP

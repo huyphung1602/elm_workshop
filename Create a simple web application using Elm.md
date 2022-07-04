@@ -21,6 +21,7 @@ blockquote {
 .left-al {
     text-align: left;
 }
+
 </style>
 
 # Create a simple web application using Elm
@@ -31,19 +32,54 @@ blockquote {
 \- Mario Uher, CTO, yodel.io
 
 ---
+<!-- .slide: class="left-al"" -->
 
+## What is Elm?
+A functional language (Elm syntax is inspired by Haskell) which is use to create front-end web application.
+
+Elm code will be compiled to Javascript.
+
+---
+<!-- .slide: class="left-al"" -->
+
+## Why do you should try Elm today?
+- No runtime exceptions
+- Immutable values 
+- Small assets
+- Javascript interop
+
+---
+<!-- .slide: class="left-al"" -->
+
+### No runtime execptions
+Elm uses type inference to detect corner cases and give friendly hints. [Learn more](https://elm-lang.org/news/compilers-as-assistants)
+
+---
+<!-- .slide: class="left-al"" -->
+
+### Small assets
+Elm 0.19 introdues **Dead Code Elimination** (compile with `--optimize` flag). If you use a package with hundreds of functions, like `elm/html`. Elm will automatically trims down to the 10 you actually use in your application. How does it work?
+
+- Elm functions cannot be redefined or removed at runtime.
+- Every package on package.elm-lang.org is written entirely in Elm.
+
+[Learn more](https://elm-lang.org/news/small-assets-without-the-headache)
+
+---
+<!-- .slide: class="left-al"" -->
+### Javascript interop
+You can use Elm as a small part of your existing project (Holistics). [Learn more](http://guide.elm-lang.org/interop/)
+
+---
+## Real Life Examples
+- [NoRedInk](https://www.youtube.com/watch?v=R2FtMbb-nLs&ab_channel=ForwardJS)
+- [CultureAmp](https://www.youtube.com/watch?v=uQjivmLan0E&ab_channel=KevinYank)
+
+---
 ## What will you learn?
 - Elm syntax and types.
 - Build a simple static application and a simple single-page application.
 - Handle HTTP requests and Web socket requests besides the Elm error handling technique.
-
----
-
-## What is Elm?
-- A functional language
-- No runtime exceptions
-- Small assets
-- Javascript interop
 
 ---
 # Types
@@ -130,7 +166,7 @@ Write a function to count the number of members in a list.
 
 ## Module and Package
 
-![[Pasted image 20220703124959.png]]
+![[Pasted image 20220703124959.png]] <!-- .element: style="max-width: 600px;" -->
 
 ---
 <!-- .slide: class="left-al"" -->
@@ -239,7 +275,7 @@ Now, let's write the **Picshare** spa application together. We will:
 - Add comments
 
 ```bash
-cd ./2-stateful-app
+cd ./**2-stateful-app
 ```
 ---
 # Communicate via HTTP
@@ -444,6 +480,7 @@ You could enter the folder "real-time" in the current repository. Then open this
 Check my blog for this: https://huyphung.one/posts/2022-03-26-virtual-dom-in-elm/
 
 ---
+<!-- .slide: class="left-al"" -->
 ## Development and Deployment
 
 Check my blog for this: https://huyphung.one/posts/2022-04-14-my-setup-for-elm-application/
@@ -453,10 +490,12 @@ Check my blog for this: https://huyphung.one/posts/2022-04-14-my-setup-for-elm-a
 - https://guide.elm-lang.org/
 - https://elmprogramming.com/conventions-used-in-the-book.html
 - https://pragprog.com/titles/jfelm/programming-elm/
+- https://elm-lang.org/news/small-assets-without-the-headache
 - https://huyphung.one
 
 ---
 ![[a6OeW82_700bwp.webp]]
 
 ---
-![[a9KwK6L_700bwp.webp]]
+
+![[a9KwK6L_700bwp.webp]] <!-- .element: style="max-width: 600px;" -->

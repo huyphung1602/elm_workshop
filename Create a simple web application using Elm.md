@@ -1,6 +1,6 @@
 ---
 theme: solarized
-highlightTheme: monokai
+highlightTheme: highlight_themes/atom-one-dark.css
 ---
 <style>
 code {

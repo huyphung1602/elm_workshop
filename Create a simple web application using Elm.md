@@ -57,6 +57,12 @@ Elm uses type inference to detect corner cases and give friendly hints. [Learn m
 ---
 <!-- .slide: class="left-al"" -->
 
+### Immutable values
+In Elm, you cannot mutate values. The values are **immutable**. Instead of mutating values, you can create new values. So, it is easy to make a Time Traveling Debugger using Elm. [Learn more](https://elm-lang.org/news/time-travel-made-easy)
+
+---
+<!-- .slide: class="left-al"" -->
+
 ### Small assets
 Elm 0.19 introdues **Dead Code Elimination** (compile with `--optimize` flag). If you use a package with hundreds of functions, like `elm/html`. Elm will automatically trims down to the 10 you actually use in your application. How does it work?
 

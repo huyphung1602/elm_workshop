@@ -182,7 +182,6 @@ Write a function to count the number of members in a list.
 
 Module Declaration
 ```elm
-Module Declaration
 module Main exposing (main)
 ```
 
@@ -207,7 +206,7 @@ Html defined using Elm's Html package
 ```elm
 module Main exposing (main)
 
-import Html exposing (Html, div, h1)
+import Html exposing (Html, div, h1, text)
 import Html.Attributes exposing (class)
 
 main : Html msg
@@ -215,6 +214,10 @@ main =
     div [class "header"]
       [ h1 [] [text "Hello World"] ]
 ```
+
+---
+## Html package
+<!-- .slide: class="left-al"" -->
 
 Check Elm Html package: https://package.elm-lang.org/packages/elm/html/latest/
 

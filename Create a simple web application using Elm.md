@@ -178,11 +178,48 @@ Write a function to count the number of members in a list.
 ---
 <!-- .slide: class="left-al"" -->
 
-## Html
+## Module and Package
+
+Module Declaration
+```elm
+Module Declaration
+module Main exposing (main)
+```
+
+Import functions from packages
+```elm
+import Html exposing (Html, div, h1)
+import Html.Attributes exposing (class, src)
+```
+
+---
+<!-- .slide: class="left-al"" -->
+## Html package
+
+Html in the normal web application
+```html
+<div class="header">
+  <h1>Hello World</h1>
+<div>
+```
+
+Html defined using Elm's Html package
+```elm
+module Main exposing (main)
+
+import Html exposing (Html, div, h1)
+import Html.Attributes exposing (class)
+
+main : Html msg
+main =
+    div [class "header"]
+      [ h1 [] [text "Hello World"] ]
+```
+
 Check Elm Html package: https://package.elm-lang.org/packages/elm/html/latest/
 
 ---
-## Define your index.html
+## Define your index.html and using elm compiled code
 ```html
 <body>
   <div id="main" class="main"></div>
@@ -195,13 +232,6 @@ Check Elm Html package: https://package.elm-lang.org/packages/elm/html/latest/
 </body>
 ```
 ---
-## Declare main and import HTML module
-```elm
-module Picshare exposing (main)
-
-import Html exposing (..)
-import Html.Attributes exposing (class)
-```
 ---
 
 ## Compile your Elm file to Javascript

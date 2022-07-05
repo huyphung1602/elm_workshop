@@ -112,13 +112,6 @@ viewComments model =
 -- START : View
 viewDetailedPhoto : Model -> Html Msg
 viewDetailedPhoto model =
-    let
-        buttonClass = 
-            if model.liked then
-                "fa-heart"
-            else
-                "fa-heart-o"
-    in
     div [ class "detailed-photo" ]
         [ img [ src model.url ] []
         , div [ class "photo-info" ]

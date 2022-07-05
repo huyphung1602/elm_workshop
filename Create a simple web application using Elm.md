@@ -85,7 +85,7 @@ You can use Elm as a small part of your existing project (Holistics). [Learn mor
 ---
 ## What will you learn?
 - Elm syntax and types.
-- Build a simple static application and a simple single-page application.
+- Build a simple static application and a simple stateful application.
 - Handle HTTP requests and Web socket requests besides the Elm error handling technique.
 
 ---

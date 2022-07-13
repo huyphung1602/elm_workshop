@@ -92,7 +92,7 @@ You can use Elm as a small part of your existing project (Holistics). [Learn mor
 # Types
 ---
 
-## Premitives
+## Primitives
 - Int
 -  Float
 - Char
@@ -317,6 +317,19 @@ Now, let's write the **Picshare** spa application together. We will:
 ```bash
 cd ./**2-stateful-app
 ```
+
+---
+## Add love button
+---
+
+![[Pasted image 20220713122432.png]]
+
+---
+## Add comments
+---
+
+![[Pasted image 20220713122019.png]]
+
 ---
 # Communicate via HTTP
 ---
